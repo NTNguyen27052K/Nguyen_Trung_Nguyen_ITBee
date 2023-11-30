@@ -19,13 +19,29 @@ import "./homeTemplate.scss";
 import { useDispatch } from "react-redux";
 import { findUser } from "../redux/Action/actionUsers";
 import Button from "@mui/material/Button";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import TableUsers from "../components/tableUsers/TableUsers";
+import { createTheme } from "@mui/material/styles";
+import Paper from "@mui/material/Paper";
+//
+
+//
 import {
   Experimental_CssVarsProvider as CssVarsProvider,
   experimental_extendTheme as extendTheme,
   useColorScheme,
 } from "@mui/material/styles";
+
+function ModeToggle() {
+  const { mode, setMode } = useColorScheme();
+  return (
+    <Button
+      onClick={() => {
+        setMode(mode === "light" ? "dark" : "light");
+      }}
+    >
+      {mode === "light" ? "Turn dark" : "Turn light"}
+    </Button>
+  );
+}
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -156,13 +172,15 @@ const HomeTemplate = () => {
       <MenuItem onClick={handleMenuClose}>My Settings</MenuItem>
     </Menu>
   );
-
+  // const [mode, setMode] = React.useState("light");
+  const { mode, setMode } = useColorScheme();
   return (
-    <Fragment>
+    <Paper sx={{ height: "100vh" }}>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" className="nttnnnn">
           <Toolbar>
             {/* MenuIcon */}
+
             <IconButton
               size="large"
               edge="start"
@@ -218,7 +236,16 @@ const HomeTemplate = () => {
               {/* item 3 */}
               <Grid item xs={3} md={3} container justifyContent="flex-end">
                 <FormControlLabel
-                  control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
+                  control={
+                    <MaterialUISwitch
+                      sx={{ m: 1 }}
+                      defaultChecked
+                      onClick={() => {
+                        console.log(mode);
+                        setMode(mode === "light" ? "dark" : "light");
+                      }}
+                    />
+                  }
                 />
 
                 <Box>
@@ -241,8 +268,7 @@ const HomeTemplate = () => {
         {renderMenu}
       </Box>
       <Outlet />
-      {/* <TableUsers /> */}
-    </Fragment>
+    </Paper>
   );
 };
 
