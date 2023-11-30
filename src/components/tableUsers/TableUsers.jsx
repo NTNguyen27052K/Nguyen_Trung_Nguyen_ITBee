@@ -37,6 +37,7 @@ const TableUsers = () => {
         <TableHead>
           <TableRow>
             <TableCell align="center">STT</TableCell>
+            <TableCell align="center">ID</TableCell>
             <TableCell align="center">Name</TableCell>
             <TableCell align="center">Email</TableCell>
             <TableCell align="center">Phone</TableCell>
@@ -50,11 +51,12 @@ const TableUsers = () => {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell align="center">{index + 1}</TableCell>
+              <TableCell align="center">{row.id}</TableCell>
               <TableCell align="center">{row.name}</TableCell>
               <TableCell align="center">{row.email}</TableCell>
               <TableCell align="center">{row.phone}</TableCell>
               <TableCell align="center">
-                <NavLink to={`/edit`}>
+                <NavLink to={`/edit/${row.id}`}>
                   <Button variant="outlined" sx={{ mr: 1 }}>
                     <EditIcon />
                   </Button>

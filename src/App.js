@@ -10,7 +10,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomeTemplate />}>
           <Route index element={<TableUsers />} />
-          <Route path="/edit" element={<EditUser />} />
+          <Route path="/edit/:id" element={<EditUser />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,42 +1,42 @@
-import { DELETE } from "../Type/actionType";
+import { DELETE, EDIT, FIND } from "../Type/actionType";
 
 const initialState = {
   contacts: [
     {
       id: 1,
-      name: "John Doe",
+      name: "John Doe One",
       email: "john@example.com",
-      phone: "123-456-7890",
+      phone: "0381111111",
     },
     {
       id: 2,
-      name: "Jane Smith",
+      name: "Jane Smith Two",
       email: "jane@example.com",
-      phone: "987-654-3210",
+      phone: "0382222222",
     },
     {
       id: 3,
-      name: "Alice Johnson",
+      name: "Alice Johnson Three",
       email: "alice@example.com",
-      phone: "111-222-3333",
+      phone: "0383333333",
     },
     {
       id: 4,
-      name: "Bob Brown",
+      name: "Bob Brown Four",
       email: "bob@example.com",
-      phone: "555-555-5555",
+      phone: "0384444444",
     },
     {
       id: 5,
-      name: "Eva Williams",
+      name: "Eva Williams Five",
       email: "eva@example.com",
-      phone: "777-777-7777",
+      phone: "0385555555",
     },
     {
       id: 6,
-      name: "Michael Davis",
+      name: "Michael Davis Six",
       email: "michael@example.com",
-      phone: "999-999-9999",
+      phone: "0384444444",
     },
   ],
 };
@@ -52,6 +52,16 @@ export const usersReducer = (state = initialState, action) => {
       if (findIndexUser !== -1) {
         newArrLstUsers.splice(findIndexUser, 1);
       }
+
+      return { ...state, contacts: newArrLstUsers };
+    }
+    case EDIT: {
+      const findIndexUser = state.contacts.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      const newArrLstUsers = [...state.contacts];
+
+      newArrLstUsers[findIndexUser] = action.payload;
 
       return { ...state, contacts: newArrLstUsers };
     }
