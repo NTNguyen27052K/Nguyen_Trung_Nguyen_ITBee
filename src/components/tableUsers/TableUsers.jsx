@@ -21,7 +21,7 @@ import { useFormik } from "formik";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-
+import * as Yup from "yup";
 const style = {
   position: "absolute",
   top: "50%",
@@ -41,7 +41,7 @@ const TableUsers = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const [errorText, setErrorText] = useState("");
   const formik = useFormik({
     initialValues: {
       id: "",
@@ -63,14 +63,15 @@ const TableUsers = () => {
       //   console.log(error);
       // }
     },
-    // validationSchema: Yup.object({
-    //   taiKhoan: Yup.string()
-    //     .min(3, "Must be 5 characters or hight")
-    //     .required("Empty"),
-    //   matKhau: Yup.string()
-    //     .min(3, "Must be 5 characters or hight")
-    //     .required("Empty"),
-    // }),
+
+    validationSchema: Yup.object({
+      id: Yup.string()
+        .matches(/^[0-9]+$/, "Must be a number")
+        .required("Id is required"),
+      name: Yup.string().required("Name is required"),
+      email: Yup.string().email().required("Email is required"),
+      phone: Yup.string().required("Phone is required"),
+    }),
   });
   const {
     handleSubmit,
@@ -156,8 +157,21 @@ const TableUsers = () => {
               sx={{ mt: 3, width: 1 }}
               name="id"
               onBlur={handleBlur}
-              onChange={handleChange}
+              onChange={(e) => {
+                handleChange(e);
+                const findId = contacts.findIndex(
+                  (item) => item.id == e.target.value
+                );
+                if (findId !== -1) {
+                  setErrorText("ID already exists");
+                  console.log("ID already exists");
+                } else {
+                  setErrorText("");
+                }
+              }}
               value={values?.id}
+              error={Boolean(touched.id && errors.id) || Boolean(errorText)}
+              helperText={touched.id && (errors.id || errorText)}
             />
             {/* name */}
             <TextField
@@ -168,6 +182,8 @@ const TableUsers = () => {
               onBlur={handleBlur}
               onChange={handleChange}
               value={values?.name}
+              error={touched.name && Boolean(errors.name)}
+              helperText={touched.name && errors.name}
             />
             {/* email */}
             <TextField
@@ -178,6 +194,8 @@ const TableUsers = () => {
               onBlur={handleBlur}
               onChange={handleChange}
               value={values?.email}
+              error={touched.email && Boolean(errors.email)}
+              helperText={touched.email && errors.email}
             />
             {/* phone */}
             <TextField
@@ -188,6 +206,8 @@ const TableUsers = () => {
               onBlur={handleBlur}
               onChange={handleChange}
               value={values?.phone}
+              error={touched.phone && Boolean(errors.phone)}
+              helperText={touched.phone && errors.phone}
             />
             <Stack spacing={2} direction="row" sx={{ mt: 3, width: 1 }}>
               <Grid

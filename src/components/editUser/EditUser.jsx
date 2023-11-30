@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { editUser } from "../../redux/Action/actionUsers";
+import * as Yup from "yup";
 
 const EditUser = () => {
   const { contacts } = useSelector((state) => state.users);
@@ -39,25 +40,15 @@ const EditUser = () => {
       phone: "",
     },
     onSubmit: (values) => {
-      // console.log("values");
-      // console.log(values);
-
-      try {
-        if (dispatch(editUser(values))) {
-          navigate("/");
-        }
-      } catch (error) {
-        console.log(error);
-      }
+      if (dispatch(editUser(values))) navigate("/");
     },
-    // validationSchema: Yup.object({
-    //   taiKhoan: Yup.string()
-    //     .min(3, "Must be 5 characters or hight")
-    //     .required("Empty"),
-    //   matKhau: Yup.string()
-    //     .min(3, "Must be 5 characters or hight")
-    //     .required("Empty"),
-    // }),
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .matches(/^[0-9]+$/, "Must be a number")
+        .required("Name is required"),
+      email: Yup.string().email().required("Email is required"),
+      phone: Yup.string().required("Phone is required"),
+    }),
   });
   const {
     handleSubmit,
@@ -112,6 +103,8 @@ const EditUser = () => {
           onBlur={handleBlur}
           onChange={handleChange}
           value={values?.name}
+          error={touched.name && Boolean(errors.name)}
+          helperText={touched.name && errors.name}
         />
         {/* email */}
         <TextField
@@ -124,6 +117,8 @@ const EditUser = () => {
           onBlur={handleBlur}
           onChange={handleChange}
           value={values?.email}
+          error={touched.email && Boolean(errors.email)}
+          helperText={touched.email && errors.email}
         />
         {/* phone */}
         <TextField
@@ -136,6 +131,8 @@ const EditUser = () => {
           onBlur={handleBlur}
           onChange={handleChange}
           value={values?.phone}
+          error={touched.phone && Boolean(errors.phone)}
+          helperText={touched.phone && errors.phone}
         />
         <Stack spacing={2} direction="row" sx={{ mt: 3, width: 1 }}>
           <Grid

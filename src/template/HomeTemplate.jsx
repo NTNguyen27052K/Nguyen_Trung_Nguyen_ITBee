@@ -19,6 +19,8 @@ import "./homeTemplate.scss";
 import { useDispatch } from "react-redux";
 import { findUser } from "../redux/Action/actionUsers";
 import Button from "@mui/material/Button";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import TableUsers from "../components/tableUsers/TableUsers";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -106,14 +108,17 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     borderRadius: 20 / 2,
   },
 }));
-
+const darkTheme = createTheme({
+  palette: {
+    mode: "light",
+  },
+});
 const HomeTemplate = () => {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -128,11 +133,8 @@ const HomeTemplate = () => {
     handleMobileMenuClose();
   };
 
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-
   const menuId = "primary-search-account-menu";
+
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -155,7 +157,7 @@ const HomeTemplate = () => {
   );
 
   return (
-    <Fragment>
+    <ThemeProvider theme={darkTheme}>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
@@ -205,10 +207,10 @@ const HomeTemplate = () => {
                         dispatch(findUser(event.target.value));
                       }
                     }}
-                    // onChange={(e) => {
-                    //   // console.log(e.target.value);
-                    //   dispatch(findUser(e.target.value));
-                    // }}
+                    onChange={(e) => {
+                      // console.log(e.target.value);
+                      dispatch(findUser(e.target.value));
+                    }}
                   />
                 </Search>
               </Grid>
@@ -236,9 +238,9 @@ const HomeTemplate = () => {
         </AppBar>
         {renderMenu}
       </Box>
-
       <Outlet />
-    </Fragment>
+      {/* <TableUsers /> */}
+    </ThemeProvider>
   );
 };
 
