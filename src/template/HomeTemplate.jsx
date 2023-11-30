@@ -220,6 +220,7 @@ const HomeTemplate = () => {
         </AppBar>
         {renderMenu}
       </Box>
+
       <Outlet />
     </Fragment>
   );

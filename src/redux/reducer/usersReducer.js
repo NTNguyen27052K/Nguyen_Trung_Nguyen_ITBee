@@ -1,4 +1,4 @@
-import { DELETE, EDIT, FIND } from "../Type/actionType";
+import { ADD, DELETE, EDIT, FIND } from "../Type/actionType";
 
 const initialState = {
   contacts: [
@@ -62,6 +62,21 @@ export const usersReducer = (state = initialState, action) => {
       const newArrLstUsers = [...state.contacts];
 
       newArrLstUsers[findIndexUser] = action.payload;
+
+      return { ...state, contacts: newArrLstUsers };
+    }
+    case ADD: {
+      // console.log(action.payload);
+      const findIndexUser = state.contacts.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      const newArrLstUsers = [...state.contacts];
+
+      if (findIndexUser === -1) {
+        newArrLstUsers.push({ ...action.payload });
+      }
+
+      // newArrLstUsers[findIndexUser] = action.payload;
 
       return { ...state, contacts: newArrLstUsers };
     }

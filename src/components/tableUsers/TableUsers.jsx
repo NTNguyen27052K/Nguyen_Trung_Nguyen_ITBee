@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -9,73 +9,221 @@ import Paper from "@mui/material/Paper";
 import { useSelector } from "react-redux";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import { NavLink } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { useDispatch } from "react-redux";
-import { deleteUser } from "../../redux/Action/actionUsers";
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs };
-}
+import { addUser, deleteUser } from "../../redux/Action/actionUsers";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import { useFormik } from "formik";
+import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
 
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 const TableUsers = () => {
   const { contacts } = useSelector((state) => state.users);
   const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const formik = useFormik({
+    initialValues: {
+      id: "",
+      name: "",
+      email: "",
+      phone: "",
+    },
+    onSubmit: (values) => {
+      // console.log("values");
+      console.log(values);
+      if (dispatch(addUser(values))) {
+        handleClose();
+      }
+      // try {
+      //   if (dispatch(editUser(values))) {
+      //     navigate("/");
+      //   }
+      // } catch (error) {
+      //   console.log(error);
+      // }
+    },
+    // validationSchema: Yup.object({
+    //   taiKhoan: Yup.string()
+    //     .min(3, "Must be 5 characters or hight")
+    //     .required("Empty"),
+    //   matKhau: Yup.string()
+    //     .min(3, "Must be 5 characters or hight")
+    //     .required("Empty"),
+    // }),
+  });
+  const {
+    handleSubmit,
+    handleChange,
+    handleBlur,
+    errors,
+    touched,
+    values,
+    setValues,
+  } = formik;
   // console.log(contacts);
   return (
-    <TableContainer
-      component={Paper}
-      sx={{ mt: 10, mx: "auto", width: 9 / 10 }}
-    >
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell align="center">STT</TableCell>
-            <TableCell align="center">ID</TableCell>
-            <TableCell align="center">Name</TableCell>
-            <TableCell align="center">Email</TableCell>
-            <TableCell align="center">Phone</TableCell>
-            <TableCell align="center">Option </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {contacts.map((row, index) => (
-            <TableRow
-              key={row.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell align="center">{index + 1}</TableCell>
-              <TableCell align="center">{row.id}</TableCell>
-              <TableCell align="center">{row.name}</TableCell>
-              <TableCell align="center">{row.email}</TableCell>
-              <TableCell align="center">{row.phone}</TableCell>
-              <TableCell align="center">
-                <NavLink to={`/edit/${row.id}`}>
-                  <Button variant="outlined" sx={{ mr: 1 }}>
-                    <EditIcon />
-                  </Button>
-                </NavLink>
-
+    <Box sx={{ mt: 10, mx: "auto", width: 9 / 10 }}>
+      <Button
+        variant="outlined"
+        endIcon={<AddCircleOutlineOutlinedIcon />}
+        sx={{ mb: 2 }}
+        onClick={handleOpen}
+      >
+        Add Contact
+      </Button>
+      {/* Modal */}
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <form onSubmit={handleSubmit} container>
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            sx={{
+              width: 1,
+              mt: 10,
+              width: 3 / 10,
+              mx: "auto",
+              bgcolor: "background.paper",
+              border: 0,
+              boxShadow: 24,
+              p: 4,
+            }}
+          >
+            <Typography variant="h4" gutterBottom>
+              Add Contact
+            </Typography>
+            {/* id */}
+            <TextField
+              label="ID"
+              sx={{ mt: 3, width: 1 }}
+              name="id"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values?.id}
+            />
+            {/* name */}
+            <TextField
+              required
+              label="Name"
+              sx={{ mt: 3, width: 1 }}
+              name="name"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values?.name}
+            />
+            {/* email */}
+            <TextField
+              required
+              label="Email"
+              sx={{ mt: 3, width: 1 }}
+              name="email"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values?.email}
+            />
+            {/* phone */}
+            <TextField
+              required
+              label="Phone"
+              sx={{ mt: 3, width: 1 }}
+              name="phone"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values?.phone}
+            />
+            <Stack spacing={2} direction="row" sx={{ mt: 3, width: 1 }}>
+              <Grid
+                container
+                direction="row"
+                justifyContent="flex-end"
+                alignItems="center"
+              >
                 <Button
-                  variant="outlined"
-                  onClick={() => {
-                    dispatch(deleteUser(row.id));
-                  }}
+                  variant="contained"
+                  sx={{ mr: 1 }}
+                  onClick={() => handleClose()}
                 >
-                  <DeleteIcon />
+                  Cancel
                 </Button>
-              </TableCell>
+                <Button type="submit" variant="contained">
+                  Save
+                </Button>
+              </Grid>
+            </Stack>
+          </Grid>
+        </form>
+      </Modal>
+      {/* data table contact */}
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="center">STT</TableCell>
+              <TableCell align="center">ID</TableCell>
+              <TableCell align="center">Name</TableCell>
+              <TableCell align="center">Email</TableCell>
+              <TableCell align="center">Phone</TableCell>
+              <TableCell align="center">Option </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {contacts.map((row, index) => (
+              <TableRow
+                key={row.id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell align="center">{index + 1}</TableCell>
+                <TableCell align="center">{row.id}</TableCell>
+                <TableCell align="center">{row.name}</TableCell>
+                <TableCell align="center">{row.email}</TableCell>
+                <TableCell align="center">{row.phone}</TableCell>
+                <TableCell align="center">
+                  <NavLink to={`/edit/${row.id}`}>
+                    <Button variant="outlined" sx={{ mr: 1 }}>
+                      <EditIcon />
+                    </Button>
+                  </NavLink>
+
+                  <Button
+                    variant="outlined"
+                    onClick={() => {
+                      dispatch(deleteUser(row.id));
+                    }}
+                  >
+                    <DeleteIcon />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };
 

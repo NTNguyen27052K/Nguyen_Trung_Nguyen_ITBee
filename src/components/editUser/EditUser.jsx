@@ -144,16 +144,14 @@ const EditUser = () => {
             justifyContent="flex-end"
             alignItems="center"
           >
-            <Button variant="contained" sx={{ mr: 1 }}>
+            <Button
+              variant="contained"
+              sx={{ mr: 1 }}
+              onClick={() => navigate("/")}
+            >
               Cancel
             </Button>
-            <Button
-              type="submit"
-              variant="contained"
-              // onClick={() => {
-              //   dispatch(editUser(row.id));
-              // }}
-            >
+            <Button type="submit" variant="contained">
               Save
             </Button>
           </Grid>
