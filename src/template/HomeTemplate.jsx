@@ -21,6 +21,11 @@ import { findUser } from "../redux/Action/actionUsers";
 import Button from "@mui/material/Button";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import TableUsers from "../components/tableUsers/TableUsers";
+import {
+  Experimental_CssVarsProvider as CssVarsProvider,
+  experimental_extendTheme as extendTheme,
+  useColorScheme,
+} from "@mui/material/styles";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -108,11 +113,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     borderRadius: 20 / 2,
   },
 }));
-const darkTheme = createTheme({
-  palette: {
-    mode: "light",
-  },
-});
+
 const HomeTemplate = () => {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -157,9 +158,9 @@ const HomeTemplate = () => {
   );
 
   return (
-    <ThemeProvider theme={darkTheme}>
+    <Fragment>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
+        <AppBar position="static" className="nttnnnn">
           <Toolbar>
             {/* MenuIcon */}
             <IconButton
@@ -219,6 +220,7 @@ const HomeTemplate = () => {
                 <FormControlLabel
                   control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
                 />
+
                 <Box>
                   <IconButton
                     // size="large"
@@ -240,7 +242,7 @@ const HomeTemplate = () => {
       </Box>
       <Outlet />
       {/* <TableUsers /> */}
-    </ThemeProvider>
+    </Fragment>
   );
 };
 

@@ -115,7 +115,14 @@ const TableUsers = () => {
   };
 
   return (
-    <Box sx={{ mt: 10, mx: "auto", width: 9 / 10 }}>
+    <Box
+      sx={{
+        mt: 5,
+        mx: "auto",
+        width: 9 / 10,
+        height: "auto",
+      }}
+    >
       <Button
         variant="outlined"
         endIcon={<AddCircleOutlineOutlinedIcon />}
