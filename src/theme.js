@@ -10,9 +10,9 @@ const theme = extendTheme({
     },
     dark: {
       palette: {
-        // primary: {
-        //   main: "#000",
-        // },
+        primary: {
+          main: "#fff",
+        },
       },
     },
   },

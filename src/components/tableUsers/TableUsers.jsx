@@ -155,9 +155,7 @@ const TableUsers = () => {
               p: 4,
             }}
           >
-            <Typography variant="h4" gutterBottom>
-              Add Contact
-            </Typography>
+            <Typography variant="h4">Add Contact</Typography>
             {/* id */}
             <TextField
               label="ID"
