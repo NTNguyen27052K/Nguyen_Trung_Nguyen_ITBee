@@ -34,7 +34,9 @@ const style = {
   p: 4,
 };
 const TableUsers = () => {
-  const { contacts } = useSelector((state) => state.users);
+  const { contacts, statusSearch, newContacts } = useSelector(
+    (state) => state.users
+  );
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -79,7 +81,38 @@ const TableUsers = () => {
     values,
     setValues,
   } = formik;
-  // console.log(contacts);
+
+  const renderLstUsers = (item) => {
+    return item.map((row, index) => (
+      <TableRow
+        key={row.id}
+        sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+      >
+        <TableCell align="center">{index + 1}</TableCell>
+        <TableCell align="center">{row.id}</TableCell>
+        <TableCell align="center">{row.name}</TableCell>
+        <TableCell align="center">{row.email}</TableCell>
+        <TableCell align="center">{row.phone}</TableCell>
+        <TableCell align="center">
+          <NavLink to={`/edit/${row.id}`}>
+            <Button variant="outlined" sx={{ mr: 1 }}>
+              <EditIcon />
+            </Button>
+          </NavLink>
+
+          <Button
+            variant="outlined"
+            onClick={() => {
+              dispatch(deleteUser(row.id));
+            }}
+          >
+            <DeleteIcon />
+          </Button>
+        </TableCell>
+      </TableRow>
+    ));
+  };
+
   return (
     <Box sx={{ mt: 10, mx: "auto", width: 9 / 10 }}>
       <Button
@@ -191,35 +224,13 @@ const TableUsers = () => {
               <TableCell align="center">Option </TableCell>
             </TableRow>
           </TableHead>
+          {/* <TableCell align="center" colSpan={6}>
+                  Contact Not Found
+                </TableCell> */}
           <TableBody>
-            {contacts.map((row, index) => (
-              <TableRow
-                key={row.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell align="center">{index + 1}</TableCell>
-                <TableCell align="center">{row.id}</TableCell>
-                <TableCell align="center">{row.name}</TableCell>
-                <TableCell align="center">{row.email}</TableCell>
-                <TableCell align="center">{row.phone}</TableCell>
-                <TableCell align="center">
-                  <NavLink to={`/edit/${row.id}`}>
-                    <Button variant="outlined" sx={{ mr: 1 }}>
-                      <EditIcon />
-                    </Button>
-                  </NavLink>
-
-                  <Button
-                    variant="outlined"
-                    onClick={() => {
-                      dispatch(deleteUser(row.id));
-                    }}
-                  >
-                    <DeleteIcon />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+            {statusSearch
+              ? renderLstUsers(newContacts)
+              : renderLstUsers(contacts)}
           </TableBody>
         </Table>
       </TableContainer>

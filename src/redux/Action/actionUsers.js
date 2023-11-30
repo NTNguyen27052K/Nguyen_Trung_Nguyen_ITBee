@@ -18,3 +18,10 @@ export const addUser = (item) => {
     payload: item,
   };
 };
+
+export const findUser = (item) => {
+  return {
+    type: FIND,
+    payload: item,
+  };
+};

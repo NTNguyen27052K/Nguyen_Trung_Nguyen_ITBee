@@ -39,6 +39,8 @@ const initialState = {
       phone: "0384444444",
     },
   ],
+  newContacts: [],
+  statusSearch: false,
 };
 
 export const usersReducer = (state = initialState, action) => {
@@ -79,6 +81,22 @@ export const usersReducer = (state = initialState, action) => {
       // newArrLstUsers[findIndexUser] = action.payload;
 
       return { ...state, contacts: newArrLstUsers };
+    }
+    case FIND: {
+      if (action.payload) {
+        const lstUser = state.contacts.filter((item) =>
+          item.name
+            .toLowerCase()
+            .trim()
+            .includes(action.payload.toLowerCase().trim())
+        );
+        // console.log(lstUser);
+        if (lstUser.length === 0) {
+          alert("Không tìm thấy kết quả");
+        }
+        return { ...state, newContacts: lstUser, statusSearch: true };
+      }
+      return { ...state, newContacts: [], statusSearch: false };
     }
     default: {
       return { ...state };

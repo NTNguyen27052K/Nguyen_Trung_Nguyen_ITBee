@@ -15,6 +15,10 @@ import Grid from "@mui/material/Grid";
 import { NavLink, Outlet } from "react-router-dom";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
+import "./homeTemplate.scss";
+import { useDispatch } from "react-redux";
+import { findUser } from "../redux/Action/actionUsers";
+import Button from "@mui/material/Button";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -104,6 +108,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 const HomeTemplate = () => {
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -172,7 +177,7 @@ const HomeTemplate = () => {
               columns={12}
             >
               {/* item 1 */}
-              <Grid item md={3}>
+              <Grid item xs={3} md={3}>
                 <NavLink to="/">
                   <Typography
                     variant="h4"
@@ -185,19 +190,30 @@ const HomeTemplate = () => {
                 </NavLink>
               </Grid>
               {/* item 2 */}
-              <Grid item md={6}>
+              <Grid item xs={6} md={6}>
                 <Search>
                   <SearchIconWrapper>
                     <SearchIcon />
                   </SearchIconWrapper>
+
                   <StyledInputBase
                     placeholder="Search…"
                     inputProps={{ "aria-label": "search" }}
+                    fullWidth={true}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        dispatch(findUser(event.target.value));
+                      }
+                    }}
+                    // onChange={(e) => {
+                    //   // console.log(e.target.value);
+                    //   dispatch(findUser(e.target.value));
+                    // }}
                   />
                 </Search>
               </Grid>
               {/* item 3 */}
-              <Grid item md={3} container justifyContent="flex-end">
+              <Grid item xs={3} md={3} container justifyContent="flex-end">
                 <FormControlLabel
                   control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
                 />
