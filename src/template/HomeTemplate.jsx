@@ -212,7 +212,7 @@ const HomeTemplate = () => {
               </Grid>
               {/* item 2 */}
               <Grid item xs={6} md={6}>
-                <Search>
+                <Search className="inputSearch">
                   <SearchIconWrapper>
                     <SearchIcon />
                   </SearchIconWrapper>
@@ -226,10 +226,10 @@ const HomeTemplate = () => {
                         dispatch(findUser(event.target.value));
                       }
                     }}
-                    onChange={(e) => {
-                      // console.log(e.target.value);
-                      dispatch(findUser(e.target.value));
-                    }}
+                    // onChange={(e) => {
+                    //   // console.log(e.target.value);
+                    //   dispatch(findUser(e.target.value));
+                    // }}
                   />
                 </Search>
               </Grid>
